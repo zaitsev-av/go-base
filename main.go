@@ -8,16 +8,19 @@ import (
 )
 
 var (
-	red    = color.New(color.FgRed).SprintFunc()
-	green  = color.New(color.FgGreen).SprintFunc()
-	yellow = color.New(color.FgYellow).SprintFunc()
-	hiRed  = color.New(color.FgHiRed).SprintFunc()
+	red          = color.New(color.FgRed).SprintFunc()
+	redBold      = color.New(color.FgRed, color.Bold).SprintFunc()
+	success      = color.New(color.FgGreen).SprintFunc()
+	green        = color.New(color.FgGreen, color.BgBlack).Add(color.BlinkSlow).SprintFunc()
+	yellow       = color.New(color.FgYellow).SprintFunc()
+	yellowBoldUl = color.New(color.FgYellow, color.Bold).Add(color.Underline).SprintFunc()
+	fgCyan       = color.New(color.FgCyan, color.Bold).SprintFunc()
 )
 
 func main() {
 	previewResult := preview()
 	if previewResult != 1 {
-		return
+		fmt.Println(yellowBoldUl("Счетчик колорий пока не готов"))
 	}
 	for {
 		_, err := calculateMass()
@@ -33,9 +36,9 @@ func main() {
 
 func preview() uint8 {
 	var startOutput uint8
-	fmt.Println("Это консольное приложение для выбора различных калькуляторов")
-	fmt.Println("Нажмите 1 для того чтобы выбрать Калькулятора массы тела")
-	fmt.Println("Нажмите 2 для того чтобы выбрать Счетчик колорий")
+	fmt.Println(yellowBoldUl("Это консольное приложение для выбора различных калькуляторов"))
+	fmt.Println(green("Нажмите 1 для того чтобы выбрать Калькулятора массы тела"))
+	fmt.Println(green("Нажмите 2 для того чтобы выбрать Счетчик колорий"))
 	fmt.Scan(&startOutput)
 	return startOutput
 }
@@ -50,7 +53,7 @@ func checkRepeat() bool {
 func calculateMass() (bool, error) {
 	height, weight := getUserOutput()
 	if height <= 0 || weight <= 0 {
-		fmt.Println(red("❗️Критическа ошибка🤬"))
+		fmt.Println(redBold("❗️Критическа ошибка🤬"))
 		return false, errors.New("NO_CORRECT_INPUT")
 	}
 	imt := calculateIMT(height, weight)
@@ -70,23 +73,15 @@ func calculateIMT(height, weight float64) float64 {
 func getUserOutput() (float64, float64) {
 	var height float64
 	var weight float64
-	fmt.Println(hiRed("Калькулятор мыссы тела"))
+	fmt.Println(fgCyan("Калькулятор мыссы тела"))
 	fmt.Println("Введите свой рост:")
 
 	fmt.Scan(&height)
 
-	//if errHeight != nil {
-	//	fmt.Println("Ошибка ввода роста. Пожалуйста, введите число.")
-	//	return 0, 0, errors.New("NO_CORRECT_PARAMS")
-	//}
-
 	fmt.Println("Введите свой вес:")
 
 	fmt.Scan(&weight)
-	//if errWeight != nil {
-	//	fmt.Println("Ошибка ввода веса. Пожалуйста, введите число.")
-	//	return 0, 0, errors.New("NO_CORRECT_PARAMS")
-	//}
+
 	return height, weight
 }
 
@@ -97,7 +92,7 @@ func printResultIMT(imt float64) string {
 	case imt >= 16.0 && imt <= 18.5:
 		return fmt.Sprintf(yellow("У вас дефицит массы тела, ваш индекс массы тела составляет %.2f"), imt)
 	case imt >= 18.5 && imt <= 25:
-		return fmt.Sprintf(green("Вы в норме, ваш индекс массы тела составляет %.2f"), imt)
+		return fmt.Sprintf(success("Вы в норме, ваш индекс массы тела составляет %.2f"), imt)
 	case imt >= 25 && imt <= 30:
 		return fmt.Sprintf(yellow("У вас избыточная масса тела, ваш индекс массы тела составляет %.2f"), imt)
 	case imt >= 30 && imt <= 35:
