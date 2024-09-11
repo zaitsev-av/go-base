@@ -1,9 +1,10 @@
 package main
 
 import (
-	"go-base/imt"
+	"go-base/finance"
 )
 
 func main() {
-	imt.IMT()
+	//imt.IMT()
+	finance.Finance()
 }
