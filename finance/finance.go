@@ -1,17 +1,21 @@
 package finance
 
-import "fmt"
+import (
+	"fmt"
+	"go-base/consoleColors"
+)
 
 func Finance() {
+	colors := consoleColors.Colors()
 	transactions := []int{5, 10, -7}
-	fmt.Println("Давайте соберем все ваши транзакции")
+	fmt.Println(colors.YellowBoldUl("Давайте соберем все ваши транзакции"))
 	for {
 		var transaction int
-		fmt.Print("Введите сумму транзакции: ")
+		fmt.Print(colors.FgCyan("Введите сумму транзакции: "))
 		fmt.Scan(&transaction)
 		transactions = append(transactions, transaction)
 		var response string
-		fmt.Println("Есть еще транзакции? (y/n)")
+		fmt.Println(colors.Yellow("Есть еще транзакции? (y/n)"))
 		fmt.Scan(&response)
 		if response == "y" || response == "Y" || response == "yes" {
 			continue
@@ -21,7 +25,7 @@ func Finance() {
 
 	result := calculateBalance(transactions)
 
-	fmt.Println("Ваш баланс составляет: ", result)
+	fmt.Println(colors.Success("Ваш баланс составляет: ", result))
 
 }
 

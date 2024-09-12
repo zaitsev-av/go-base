@@ -1,8 +1,6 @@
 package main
 
-import (
-	"go-base/finance"
-)
+import "go-base/finance"
 
 func main() {
 	//imt.IMT()
