@@ -8,6 +8,16 @@ import (
 func Finance() {
 	colors := consoleColors.Colors()
 	transactions := []int{5, 10, -7}
+	fmt.Print(colors.YellowBoldUl(colors.FgCyan("                                                                               Your tranzations     ( ͡👁️ ͜ʖ ͡👁️)                                                                         ")))
+	fmt.Println("")
+	fmt.Print(colors.RedBold(` 
+										█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█	
+										█░░╦─╦╔╗╦─╔╗╔╗╔╦╗╔╗░░█	
+										█░░║║║╠─║─║─║║║║║╠─░░█	
+										█░░╚╩╝╚╝╚╝╚╝╚╝╩─╩╚╝░░█	
+										█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+`))
+
 	fmt.Println(colors.YellowBoldUl("Давайте соберем все ваши транзакции"))
 	for {
 		var transaction int
@@ -26,9 +36,7 @@ func Finance() {
 	result := calculateBalance(transactions)
 
 	fmt.Println(colors.Success("Ваш баланс составляет: ", result))
-
 }
-
 func calculateBalance(transactions []int) (result int) {
 	for _, transaction := range transactions {
 		result += transaction

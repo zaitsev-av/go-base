@@ -1,8 +1,9 @@
 package main
 
-import "go-base/finance"
+import "go-base/bookmarks"
 
 func main() {
 	//imt.IMT()
-	finance.Finance()
+	//finance.Finance()
+	bookmarks.Bookmarks()
 }
