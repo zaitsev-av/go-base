@@ -5,7 +5,8 @@ import (
 	"go-base/consoleColors"
 )
 
-const format = "%-5s %-10s %-5s\n"
+const formatString = "%-5s %-10s %-5s\n"
+const formatInt = "%-5d %-10s %-5s\n"
 
 var welcomeText = consoleColors.Colors().RedBold(` 
 										█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█	
@@ -15,18 +16,18 @@ var welcomeText = consoleColors.Colors().RedBold(`
 										█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
 `)
 
-var bookmarks = map[string]string{
-	"YouTube":   "https://www.youtube.com",
-	"Google":    "https://www.google.com",
-	"Instagram": "https://www.instagram.com",
-	"VK":        "https://www.vk.com",
-}
-
 func Bookmarks() {
+	var bookmarks = map[string]string{
+		"YouTube":   "https://www.youtube.com",
+		"Google":    "https://www.google.com",
+		"Instagram": "https://www.instagram.com",
+		"VK":        "https://www.vk.com",
+	}
 	color := consoleColors.Colors()
 	fmt.Print(welcomeText)
 
 	var userOutput int8
+Menu:
 	for {
 		fmt.Print(color.Yellow(`
 	1. Посмотреть закладки 
@@ -39,30 +40,29 @@ func Bookmarks() {
 		fmt.Println(color.Green("________________________________"))
 
 		switch userOutput {
-
 		case 1:
-			viewBookmarks()
+			printBookmarks(bookmarks)
 			fmt.Println(color.YellowBoldUl("________________________________"))
 		case 2:
-			addBookmark()
+			addBookmark(bookmarks)
 			fmt.Println(color.YellowBoldUl("________________________________"))
 		case 3:
-			removeBookmark()
+			removeBookmark(bookmarks)
 			fmt.Println(color.YellowBoldUl("________________________________"))
 		default:
-			return
+			break Menu
 		}
 	}
 }
 
-func removeBookmark() {
+func removeBookmark(bookmarks map[string]string) {
 	var removeBookmarkName string
 	fmt.Print("Введите название закладки которую вы хотите удалить: ")
 	fmt.Scanf("%s", &removeBookmarkName)
 	delete(bookmarks, removeBookmarkName)
 }
 
-func addBookmark() {
+func addBookmark(bookmarks map[string]string) {
 	var bookmarkName string
 	var bookmarkUrl string
 	fmt.Print("Введите название закладки: ")
@@ -72,12 +72,15 @@ func addBookmark() {
 	bookmarks[bookmarkName] = bookmarkUrl
 }
 
-func viewBookmarks() {
-	fmt.Printf(format, "ID", "Name", "URL")
+func printBookmarks(bookmarks map[string]string) {
+	if len(bookmarks) == 0 {
+		fmt.Println("У вас пока нет закладок")
+	}
+	fmt.Printf(formatString, "ID", "Name", "URL")
 	index := 1
 	for bookmark := range bookmarks {
 
-		fmt.Printf("%-5d %-10s %-5s\n", index, bookmark, bookmarks[bookmark])
+		fmt.Printf(formatInt, index, bookmark, bookmarks[bookmark])
 		index++
 	}
 }
@@ -145,7 +148,7 @@ func viewBookmarks() {
 //	case "Выход":
 //		return gocui.ErrQuit
 //	case "Посмотреть закладки":
-//		viewBookmarks(g)
+//		printBookmarks(g)
 //	case "Добавить закладку":
 //		addBookmarks(g)
 //
@@ -181,7 +184,7 @@ func viewBookmarks() {
 //		log.Panicln(err)
 //	}
 //}
-//func viewBookmarks(g *gocui.Gui) {
+//func printBookmarks(g *gocui.Gui) {
 //	g.SetCurrentView("view")
 //	v, err := g.View("view")
 //
