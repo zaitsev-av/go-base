@@ -8,6 +8,8 @@ import (
 const formatString = "%-5s %-10s %-5s\n"
 const formatInt = "%-5d %-10s %-5s\n"
 
+type BookmarkType = map[string]string
+
 var welcomeText = consoleColors.Colors().RedBold(` 
 										█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█	
 										█░░╦─╦╔╗╦─╔╗╔╗╔╦╗╔╗░░█	
@@ -17,7 +19,7 @@ var welcomeText = consoleColors.Colors().RedBold(`
 `)
 
 func Bookmarks() {
-	var bookmarks = map[string]string{
+	var bookmarks = BookmarkType{
 		"YouTube":   "https://www.youtube.com",
 		"Google":    "https://www.google.com",
 		"Instagram": "https://www.instagram.com",
@@ -55,14 +57,14 @@ Menu:
 	}
 }
 
-func removeBookmark(bookmarks map[string]string) {
+func removeBookmark(bookmarks BookmarkType) {
 	var removeBookmarkName string
 	fmt.Print("Введите название закладки которую вы хотите удалить: ")
 	fmt.Scanf("%s", &removeBookmarkName)
 	delete(bookmarks, removeBookmarkName)
 }
 
-func addBookmark(bookmarks map[string]string) {
+func addBookmark(bookmarks BookmarkType) {
 	var bookmarkName string
 	var bookmarkUrl string
 	fmt.Print("Введите название закладки: ")
@@ -72,7 +74,7 @@ func addBookmark(bookmarks map[string]string) {
 	bookmarks[bookmarkName] = bookmarkUrl
 }
 
-func printBookmarks(bookmarks map[string]string) {
+func printBookmarks(bookmarks BookmarkType) {
 	if len(bookmarks) == 0 {
 		fmt.Println("У вас пока нет закладок")
 	}
