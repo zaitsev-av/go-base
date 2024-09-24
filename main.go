@@ -1,9 +1,10 @@
 package main
 
-import "go-base/bookmarks"
+import "go-base/password"
 
 func main() {
 	//imt.IMT()
 	//finance.Finance()
-	bookmarks.Bookmarks()
+	//bookmarks.Bookmarks()
+	password.Password()
 }
