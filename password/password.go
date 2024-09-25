@@ -1,65 +1,45 @@
 package password
 
 import (
+	"errors"
 	"fmt"
-	"math/rand"
 )
 
-type account struct {
-	login    string
-	password string
-	url      string
-}
-
-func (account *account) outputPrompt() {
-	fmt.Println(*account)
-}
+const URL_ERROR = "NO_CORRECT_URL"
 
 func Password() {
-	length := promptNum("Введите длинну пароля: ")
-	randomPassword(length)
-	//-----------------------
-	login := prompt("Введите логин: ")
-	password := prompt("Введите пароль: ")
-	url := prompt("Введите URL: ")
+	login, loginErr := prompt("Введите логин: ")
+	if loginErr != nil {
+		fmt.Println("Вы не ввели логин")
+		return
+	}
+	password, _ := prompt("Введите пароль: ")
+	var passLength string
+	if password == "" {
+		length, _ := prompt("Введите длинну пароля: ")
+		passLength = length
+	}
+	url, _ := prompt("Введите URL: ")
 
-	var userOutput = account{
-		login,
-		password,
-		url,
+	userOutput, err := newAccount(login, password, url)
+	if err != nil {
+		fmt.Println("Вы ввели некоректный URL")
+		return
 	}
 
 	userOutput.outputPrompt()
+	userOutput.randomPassword(passLength)
 	fmt.Println(userOutput, "userOutput")
 }
 
-func prompt(promptData string) string {
+func prompt(promptData string) (string, error) {
 
 	var res string
-
 	fmt.Print(promptData)
-	fmt.Scan(&res)
+	fmt.Scanln(&res)
 
-	return res
-}
-
-func promptNum(promptData string) int {
-
-	var res int
-
-	fmt.Print(promptData)
-	fmt.Scan(&res)
-
-	return res
-}
-
-func randomPassword(passwordLength int) string {
-	symbols := []rune("qwertyuiop[]asdfghjkl;'zxcvbnm,/1234567890QWERTYUIOPASDFGHJKLZXCVBNM")
-	password := ""
-	for i := 0; i < passwordLength; i++ {
-		password = password + string(symbols[rand.Intn(len(symbols))])
-
+	if res == "" {
+		return "", errors.New("NO_OUTPUT")
 	}
-	fmt.Println(password)
-	return ""
+	return res, nil
 }
