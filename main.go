@@ -2,15 +2,14 @@ package main
 
 import (
 	"go-base/files"
-	"go-base/password"
 )
 
 func main() {
 	//imt.IMT()
 	//finance.Finance()
 	//bookmarks.Bookmarks()
-	password.Password()
+	// password.Password()
 
 	files.ReadFile()
-	files.WriteFile()
+	files.WriteFile("Hello", "hi.txt")
 }
