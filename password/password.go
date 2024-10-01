@@ -3,11 +3,16 @@ package password
 import (
 	"errors"
 	"fmt"
+	"go-base/files"
 )
 
 const URL_ERROR = "NO_CORRECT_URL"
 
 func Password() {
+	createAccount()
+}
+
+func createAccount() {
 	login, loginErr := prompt("Введите логин: ")
 	if loginErr != nil {
 		fmt.Println("Вы не ввели логин")
@@ -29,7 +34,13 @@ func Password() {
 
 	userOutput.outputPrompt()
 	userOutput.randomPassword(passLength)
-	fmt.Println(userOutput, "userOutput")
+	bytsData, err := userOutput.ToBytes()
+	if err != nil {
+		fmt.Println("Не удалось преобразовать в JSON")
+	}
+
+	files.WriteFile(bytsData, "accountData.json")
+
 }
 
 func prompt(promptData string) (string, error) {

@@ -1,17 +1,21 @@
 package password
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math/rand"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 type account struct {
-	login    string
-	password string
-	url      string
+	Login     string    `json:"login"`
+	Password  string    `json:"password"`
+	Url       string    `json:"url"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (acc *account) randomPassword(passwordLength string) {
@@ -21,7 +25,7 @@ func (acc *account) randomPassword(passwordLength string) {
 	for i := 0; i < length; i++ {
 		password = password + string(symbols[rand.Intn(len(symbols))])
 	}
-	acc.password = password
+	acc.Password = password
 }
 
 func newAccount(login, password, url string) (*account, error) {
@@ -31,14 +35,24 @@ func newAccount(login, password, url string) (*account, error) {
 	}
 
 	return &account{
-		login:    login,
-		password: password,
-		url:      url,
+		Login:     login,
+		Password:  password,
+		Url:       url,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}, nil
 }
 
 func (account *account) outputPrompt() {
 	fmt.Println(*account)
+}
+
+func (account *account) ToBytes() ([]byte, error) {
+	file, err := json.Marshal(account)
+	if err != nil {
+		return nil, errors.New("ENCODING_ERROR")
+	}
+	return file, nil
 }
 
 func isValidUrl(urls string) bool {
