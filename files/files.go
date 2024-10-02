@@ -7,13 +7,13 @@ import (
 	"os"
 )
 
-func ReadFile(name string) {
+func ReadFile(name string) []byte {
 	data, err := os.ReadFile(name)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return nil
 	}
-	fmt.Println(string(data))
+	return data
 }
 
 func WriteFile(content any, fileName string, key string) {

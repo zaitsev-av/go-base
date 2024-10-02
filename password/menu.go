@@ -16,6 +16,6 @@ func passwordMenu() int {
 	return userOutput
 }
 
-func findAccount(accountName string) {
+// func findAccount(accountName string) {
 
-}
+// }
