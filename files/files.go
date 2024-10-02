@@ -1,7 +1,9 @@
 package files
 
 import (
+	"encoding/json"
 	"fmt"
+	"go-base/utils"
 	"os"
 )
 
@@ -14,17 +16,31 @@ func ReadFile(name string) {
 	fmt.Println(string(data))
 }
 
-func WriteFile(content []byte, name string) {
-	file, err := os.Create(name)
-	if err != nil {
-		fmt.Println(err)
-	}
+func WriteFile(content any, fileName string, key string) {
+	openFile, err := os.OpenFile(fileName, os.O_RDWR, 0644)
+	utils.PrintError(err, "Ошибка при открытии файла: ")
+	defer openFile.Close()
 
-	_, err = file.Write(content)
-	if err != nil {
-		fmt.Println(err)
+	readFileData, err := os.ReadFile(fileName)
+	utils.PrintError(err, "Ошибка при чтении файла: ")
+	var jsonData map[string]any
+	err = json.Unmarshal(readFileData, &jsonData)
+	utils.PrintError(err, "Ошибка парсинга JSON: ")
+
+	jsonData[key] = content
+
+	data, _ := json.Marshal(jsonData)
+
+	if err := openFile.Truncate(0); err != nil {
+		fmt.Println("Ошибка при очистке файла:", err)
 		return
 	}
-	fmt.Println("Success")
-	defer file.Close()
+	if _, err := openFile.Seek(0, 0); err != nil {
+		fmt.Println("Ошибка при установке указателя в начало файла:", err)
+		return
+	}
+
+	if _, err := openFile.Write(data); err != nil {
+		fmt.Println("Ошибка записи файла: ", err)
+	}
 }
