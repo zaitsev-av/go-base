@@ -17,7 +17,7 @@ Menu:
 		case 2:
 			findAccount()
 		case 3:
-			fmt.Println("В разработке")
+			files.RemoveAccount()
 		default:
 			break Menu
 		}

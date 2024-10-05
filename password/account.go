@@ -64,13 +64,12 @@ func isValidUrl(urls string) bool {
 	return err == nil && u.Scheme != "" && u.Host != ""
 }
 
-
 func createAccount() {
 	login, loginErr := prompt("Введите логин: ")
 	utils.PrintError(loginErr, "Вы не ввели логин")
 	password, _ := prompt("Введите пароль: ")
 	var passLength string
-	if password == "" {
+	if len(password) == 0 {
 		length, _ := prompt("Введите длинну пароля: ")
 		passLength = length
 	}
@@ -81,7 +80,9 @@ func createAccount() {
 	utils.PrintError(newAccError, "Вы ввели некоректный URL")
 
 	userOutput.outputPrompt()
-	userOutput.randomPassword(passLength)
+	if len(userOutput.Password) == 0 {
+		userOutput.randomPassword(passLength)
+	}
 	files.WriteFile(userOutput, "accountData.json", key)
 
 }

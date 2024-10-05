@@ -1,16 +1,9 @@
 {
-  "asd": {
-    "createdAt": "2024-10-02T13:17:48.658183+03:00",
-    "login": "asd",
-    "password": "",
-    "updatedAt": "2024-10-02T13:17:48.658184+03:00",
-    "url": "https://asd.com"
-  },
-  "asd2": {
-    "login": "asd2",
-    "password": "E'4'S6Z5OQWT/",
-    "url": "https://asd2.com",
-    "createdAt": "2024-10-02T13:19:00.696508+03:00",
-    "updatedAt": "2024-10-02T13:19:00.696508+03:00"
+  "qwe": {
+    "login": "qwe",
+    "password": "qweqwrqwr",
+    "url": "https://qwe.qw",
+    "createdAt": "2024-10-05T16:39:40.749171+03:00",
+    "updatedAt": "2024-10-05T16:39:40.749172+03:00"
   }
 }
