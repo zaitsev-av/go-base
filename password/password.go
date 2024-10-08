@@ -1,46 +1,30 @@
 package password
 
 import (
-	"encoding/json"
-	"fmt"
+	"go-base/account"
 	"go-base/files"
-	"go-base/utils"
 )
 
+const fileName = "accountData.json"
+
 func Password() {
+	db := files.NewJsonDb(fileName)
+	data, err := db.Read()
+	store := InitializeStore(data, err)
+
 Menu:
 	for {
 		userOutput := passwordMenu()
 		switch userOutput {
 		case 1:
-			createAccount()
+			key, data := account.CreateAccount()
+			store.AddAccount(key, *data)
 		case 2:
-			findAccount()
+			store.FindAccount()
 		case 3:
-			files.RemoveAccount()
+			store.RemoveAccount()
 		default:
 			break Menu
 		}
 	}
-}
-
-func findAccount() {
-	var outputKey string
-	fmt.Println("Введите ключ для поиска")
-	fmt.Scanln(&outputKey)
-
-	data := files.ReadFile("accountData.json")
-
-	var jsonData map[string]Account
-	err := json.Unmarshal(data, &jsonData)
-	result, exist := jsonData[outputKey]
-
-	if !exist {
-		fmt.Println("Ключ не найден")
-		return
-	}
-
-	utils.PrintError(err, "Ошибка парсинга стр 33 findPassword")
-	fmt.Println("Login: ", result.Login)
-	fmt.Println("Password: ", result.Password)
 }

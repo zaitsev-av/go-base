@@ -1,10 +1,9 @@
-package password
+package account
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"go-base/files"
 	"go-base/utils"
 	"math/rand"
 	"net/url"
@@ -47,10 +46,6 @@ func newAccount(login, password, url string) (*Account, error) {
 	}, nil
 }
 
-func (account *Account) outputPrompt() {
-	fmt.Println(*account)
-}
-
 func (account *Account) ToBytes() ([]byte, error) {
 	file, err := json.Marshal(account)
 	if err != nil {
@@ -64,7 +59,7 @@ func isValidUrl(urls string) bool {
 	return err == nil && u.Scheme != "" && u.Host != ""
 }
 
-func createAccount() {
+func CreateAccount() (key string, data *Account) {
 	login, loginErr := prompt("Введите логин: ")
 	utils.PrintError(loginErr, "Вы не ввели логин")
 	password, _ := prompt("Введите пароль: ")
@@ -74,21 +69,18 @@ func createAccount() {
 		passLength = length
 	}
 	url, _ := prompt("Введите URL: ")
-	key, _ := prompt("Введите ключ: ")
+	outputKey, _ := prompt("Введите ключ: ")
 
 	userOutput, newAccError := newAccount(login, password, url)
 	utils.PrintError(newAccError, "Вы ввели некоректный URL")
 
-	userOutput.outputPrompt()
 	if len(userOutput.Password) == 0 {
 		userOutput.randomPassword(passLength)
 	}
-	files.WriteFile(userOutput, "accountData.json", key)
-
+	return outputKey, userOutput
 }
 
 func prompt(promptData string) (string, error) {
-
 	var res string
 	fmt.Print(promptData)
 	fmt.Scanln(&res)

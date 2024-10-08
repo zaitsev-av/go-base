@@ -1,9 +1,1 @@
-{
-  "qwe": {
-    "login": "qwe",
-    "password": "qweqwrqwr",
-    "url": "https://qwe.qw",
-    "createdAt": "2024-10-05T16:39:40.749171+03:00",
-    "updatedAt": "2024-10-05T16:39:40.749172+03:00"
-  }
-}
+{"accounts":{"qwe":{"login":"qwe","password":"qwe","url":"https://qwe.qwe","createdAt":"2024-10-08T11:13:25.78002+03:00","updatedAt":"2024-10-08T11:13:25.780021+03:00"}}}
