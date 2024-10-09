@@ -25,6 +25,10 @@ func (db *JsonDb) Read() ([]byte, error) {
 	return data, nil
 }
 
+func (db *JsonDb) Write(contet []byte) {
+	os.WriteFile("accountData.json", contet, 0644)
+}
+
 // func WriteFile[T any](content T, fileName string, key string) {
 // 	openFile, err := os.OpenFile(fileName, os.O_RDWR, 0644) //os.O_RDWR|os.O_CREATE можно использовать флаг os.O_CREATE, но нужно подругому обработать запись в данный файл
 // 	defer openFile.Close()

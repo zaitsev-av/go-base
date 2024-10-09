@@ -6,41 +6,60 @@ import (
 	"go-base/account"
 	"go-base/consoleColors"
 	"go-base/utils"
-	"os"
 )
+
+type Db interface {
+	Read() ([]byte, error)
+	Write([]byte)
+}
 
 type AccountStore struct {
 	Accounts map[string]account.Account `json:"accounts"`
 }
 
-func InitializeStore(data []byte, err error) *AccountStore {
+type AccountStoreDb struct {
+	AccountStore
+	db Db
+}
+
+func InitializeStore(db Db) *AccountStoreDb {
+	data, err := db.Read()
 	if err != nil {
-		return newStore()
+		return newStore(db)
 	}
-	var storeData AccountStore
+	var storeData AccountStoreDb
 	err = json.Unmarshal(data, &storeData)
 	if err != nil {
 		utils.PrintError(err, "Ошибка при декодировании данных -> Unmarshal")
 	}
-	return &storeData
-}
-
-func newStore() *AccountStore {
-	return &AccountStore{
-		Accounts: make(map[string]account.Account),
+	return &AccountStoreDb{
+		AccountStore: AccountStore{
+			Accounts: storeData.Accounts,
+		},
+		db: db,
 	}
 }
 
-func (store *AccountStore) AddAccount(key string, data account.Account) {
-	store.Accounts[key] = data
+func newStore(db Db) *AccountStoreDb {
+	return &AccountStoreDb{
+		AccountStore: AccountStore{
+			Accounts: make(map[string]account.Account),
+		},
+		db: db,
+	}
+}
+
+func (store *AccountStoreDb) AddAccount(key string, data account.Account) {
+	// store.Accounts[key] = data
+	store.AccountStore.Accounts[key] = data
 	dataToBytes, err := json.Marshal(store)
 	if err != nil {
 		utils.PrintError(err, "Ошибка сириализации данных")
 	}
-	os.WriteFile("accountData.json", dataToBytes, 0644)
+	store.db.Write(dataToBytes)
 }
 
-func (store *AccountStore) FindAccount() {
+func (store *AccountStoreDb) FindAccount() {
 	var outputKey string
 	fmt.Println("Введите ключ для поиска")
 	fmt.Scanln(&outputKey)
@@ -49,7 +68,7 @@ func (store *AccountStore) FindAccount() {
 	fmt.Println("Password: ", store.Accounts[outputKey].Password)
 }
 
-func (store *AccountStore) RemoveAccount() {
+func (store *AccountStoreDb) RemoveAccount() {
 	var outputKey string
 	fmt.Println("Введите ключ для поиска")
 	fmt.Scanln(&outputKey)
@@ -58,6 +77,5 @@ func (store *AccountStore) RemoveAccount() {
 	if err != nil {
 		consoleColors.Colors().Red("Ошибка декодирования")
 	}
-
-	os.WriteFile("accountData.json", file, 0644)
+	store.db.Write(file)
 }

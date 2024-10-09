@@ -8,10 +8,7 @@ import (
 const fileName = "accountData.json"
 
 func Password() {
-	db := files.NewJsonDb(fileName)
-	data, err := db.Read()
-	store := InitializeStore(data, err)
-
+	store := InitializeStore(files.NewJsonDb(fileName))
 Menu:
 	for {
 		userOutput := passwordMenu()

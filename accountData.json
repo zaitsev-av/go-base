@@ -1,1 +1,25 @@
-{"accounts":{"qwe":{"login":"qwe","password":"qwe","url":"https://qwe.qwe","createdAt":"2024-10-08T11:13:25.78002+03:00","updatedAt":"2024-10-08T11:13:25.780021+03:00"}}}
+{
+  "accounts": {
+    "asd": {
+      "login": "фыв",
+      "password": "фыв",
+      "url": "https://asd.asd",
+      "createdAt": "2024-10-09T15:04:55.100326+03:00",
+      "updatedAt": "2024-10-09T15:04:55.100326+03:00"
+    },
+    "qwe": {
+      "login": "qwe",
+      "password": "qwe",
+      "url": "https://qwe",
+      "createdAt": "2024-10-09T14:25:50.069749+03:00",
+      "updatedAt": "2024-10-09T14:25:50.069749+03:00"
+    },
+    "zxc": {
+      "login": "zxc",
+      "password": "zxc",
+      "url": "https://zxc.zxc",
+      "createdAt": "2024-10-09T15:27:59.068559+03:00",
+      "updatedAt": "2024-10-09T15:27:59.06856+03:00"
+    }
+  }
+}
