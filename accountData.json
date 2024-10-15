@@ -1,5 +1,12 @@
 {
   "accounts": {
+    "123": {
+      "login": "qwe",
+      "password": "5ijicfZTOu5E",
+      "url": "https://asd.asd",
+      "createdAt": "2024-10-14T16:48:16.815188+03:00",
+      "updatedAt": "2024-10-14T16:48:16.815189+03:00"
+    },
     "asd": {
       "login": "фыв",
       "password": "фыв",

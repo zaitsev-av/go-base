@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go-base/consoleColors"
 	"go-base/utils"
 	"math/rand"
 	"net/url"
@@ -65,6 +66,7 @@ func CreateAccount() (key string, data *Account) {
 	password, _ := prompt("Введите пароль: ")
 	var passLength string
 	if len(password) == 0 {
+		fmt.Println(consoleColors.Colors().FgCyan("Вы не ввели пароль, поэтому мы его сгенерируем"))
 		length, _ := prompt("Введите длинну пароля: ")
 		passLength = length
 	}

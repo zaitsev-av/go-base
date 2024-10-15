@@ -61,11 +61,17 @@ func (store *AccountStoreDb) AddAccount(key string, data account.Account) {
 
 func (store *AccountStoreDb) FindAccount() {
 	var outputKey string
-	fmt.Println("Введите ключ для поиска")
+	fmt.Print("Введите ключ для поиска: ")
 	fmt.Scanln(&outputKey)
 
-	fmt.Println("Login: ", store.Accounts[outputKey].Login)
-	fmt.Println("Password: ", store.Accounts[outputKey].Password)
+	data, ok := store.Accounts[outputKey]
+
+	if !ok {
+		fmt.Println(consoleColors.Colors().Red("По данному ключу ничего не найдено, проверьте ключ"))
+		return
+	}
+	fmt.Println(consoleColors.Colors().Success("Login: ", data.Login))
+	fmt.Println(consoleColors.Colors().Success("Password: ", data.Password))
 }
 
 func (store *AccountStoreDb) RemoveAccount() {
@@ -78,4 +84,10 @@ func (store *AccountStoreDb) RemoveAccount() {
 		consoleColors.Colors().Red("Ошибка декодирования")
 	}
 	store.db.Write(file)
+}
+
+func (store *AccountStoreDb) KeyList() {
+	for key := range store.Accounts {
+		fmt.Printf("|%6s	|	%6s|\n", key, store.Accounts[key].Url)
+	}
 }

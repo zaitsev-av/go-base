@@ -19,6 +19,8 @@ Menu:
 		case 2:
 			store.FindAccount()
 		case 3:
+			store.KeyList()
+		case 4:
 			store.RemoveAccount()
 		default:
 			break Menu

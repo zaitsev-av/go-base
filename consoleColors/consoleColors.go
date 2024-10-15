@@ -10,6 +10,8 @@ type CreatedColors struct {
 	Yellow       func(a ...interface{}) string
 	YellowBoldUl func(a ...interface{}) string
 	FgCyan       func(a ...interface{}) string
+	BgBlue       func(a ...interface{}) string
+	Underline    func(a ...interface{}) string
 }
 
 func Colors() CreatedColors {
@@ -21,5 +23,7 @@ func Colors() CreatedColors {
 		Yellow:       color.New(color.FgYellow).SprintFunc(),
 		YellowBoldUl: color.New(color.FgYellow, color.Bold).Add(color.Underline).SprintFunc(),
 		FgCyan:       color.New(color.FgCyan, color.Bold).SprintFunc(),
+		BgBlue:       color.New(color.BgHiMagenta, color.Bold).SprintFunc(),
+		Underline:    color.New(color.Underline, color.Bold).SprintFunc(),
 	}
 }
