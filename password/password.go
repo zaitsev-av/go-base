@@ -7,11 +7,13 @@ import (
 
 const fileName = "accountData.json"
 
+var menuItems = []string{"Создать аккаунт", "Найти аккаунт", "Посмотреть список ключей", "Удалить аккаунт", "Выход", "Выберите дальниешее действие"}
+
 func Password() {
 	store := InitializeStore(files.NewJsonDb(fileName))
 Menu:
 	for {
-		userOutput := passwordMenu()
+		userOutput := templateMenu(menuItems)
 		switch userOutput {
 		case 1:
 			key, data := account.CreateAccount()

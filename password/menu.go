@@ -7,15 +7,18 @@ import (
 	"github.com/fatih/color"
 )
 
-func passwordMenu() int {
+func templateMenu(items []string) int {
 	colors := consoleColors.Colors()
 	var userOutput int
-	fmt.Println(colors.YellowBoldUl("1. Создать аккаунт"))
-	fmt.Println(colors.YellowBoldUl("2. Найти аккаунт"))
-	fmt.Println(colors.YellowBoldUl("3. Посмотреть список ключей"))
-	fmt.Println(colors.YellowBoldUl("4. Удалить аккаунт"))
-	fmt.Println(colors.YellowBoldUl("5. Выход"))
-	fmt.Print(color.HiYellowString("Выберите дальниешее действие: "))
+	for i, value := range items {
+		if len(items)-1 != i {
+			message := fmt.Sprintf("%d. %s", i+1, value)
+			fmt.Println(colors.YellowBoldUl(message))
+		} else {
+			message := fmt.Sprintf("%s: ", value)
+			fmt.Print(color.HiYellowString(message))
+		}
+	}
 	fmt.Scanln(&userOutput)
 	return userOutput
 }
