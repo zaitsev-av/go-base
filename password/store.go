@@ -9,6 +9,8 @@ import (
 	"go-base/utils"
 )
 
+var findAccountSubMenu = []string{"По ключу", "По URL", "По логину", "Выберите вариант"}
+
 type Db interface {
 	Read() ([]byte, error)
 	Write([]byte)
@@ -26,6 +28,13 @@ type AccountStoreDb struct {
 type AccountInfo struct {
 	login    string
 	password string
+}
+
+func updateInfo(login, password string) *AccountInfo {
+	return &AccountInfo{
+		login:    login,
+		password: password,
+	}
 }
 
 func InitializeStore(db Db) *AccountStoreDb {
@@ -64,43 +73,21 @@ func (store *AccountStoreDb) AddAccount(key string, data account.Account) {
 	store.db.Write(dataToBytes)
 }
 
-var findAccountSubMenu = []string{"По ключу", "По URL", "По логину", "Выберите вариант"}
-
-func findByKey1(store *AccountStoreDb) {
-	var outputKey string
-	fmt.Print("Введите ключ для поиска: ")
-	fmt.Scanln(&outputKey)
-
-	data, ok := store.Accounts[outputKey]
-
-	if !ok {
-		fmt.Println(consoleColors.Colors().Red("По данному ключу ничего не найдено, проверьте ключ"))
-		return
-	}
-	fmt.Println(consoleColors.Colors().Success("Login: ", data.Login))
-	fmt.Println(consoleColors.Colors().Success("Password: ", data.Password))
-}
-
 func findByKey(store *AccountStoreDb, key string) (*AccountInfo, error) {
 	data, ok := store.Accounts[key]
 
 	if !ok {
 		return nil, errors.New("NO_ACCOUNTS")
 	}
-	return &AccountInfo{
-		login:    data.Login,
-		password: data.Password,
-	}, nil
+	return updateInfo(data.Login, data.Password), nil
 
 }
 
+// избавится от дублирования (пока не придумал как не изменяя сигнатуру функции)
 func findByLogin(store *AccountStoreDb, login string) (*AccountInfo, error) {
 	for _, value := range store.Accounts {
 		if value.Login == login {
-			return &AccountInfo{
-				login:    value.Login,
-				password: value.Password,
-			}, nil
+			return updateInfo(value.Login, value.Password), nil
 		}
 	}
 	return nil, errors.New("NO_ACCOUNTS")
@@ -109,10 +96,7 @@ func findByLogin(store *AccountStoreDb, login string) (*AccountInfo, error) {
 func findByUrl(store *AccountStoreDb, url string) (*AccountInfo, error) {
 	for _, value := range store.Accounts {
 		if value.Url == url {
-			return &AccountInfo{
-				login:    value.Login,
-				password: value.Password,
-			}, nil
+			return updateInfo(value.Login, value.Password), nil
 		}
 	}
 	return nil, errors.New("NO_ACCOUNTS")
@@ -131,7 +115,6 @@ func (store *AccountStoreDb) FindAccount() {
 	fmt.Scanln(&outputKey)
 	findFunc := findAccountFuncs[userOutput]
 	data, err := findFunc(store, outputKey)
-	// data, ok := store.Accounts[outputKey]
 
 	if err != nil {
 		fmt.Println(consoleColors.Colors().Red("По данному ключу ничего не найдено, проверьте ключ"))
