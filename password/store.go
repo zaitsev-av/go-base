@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go-base/account"
 	"go-base/consoleColors"
+	"go-base/encrypter"
 	"go-base/utils"
 )
 
@@ -22,7 +23,8 @@ type AccountStore struct {
 
 type AccountStoreDb struct {
 	AccountStore
-	db Db
+	db        Db
+	encrypret encrypter.Encrypter
 }
 
 type AccountInfo struct {
@@ -37,10 +39,10 @@ func updateInfo(login, password string) *AccountInfo {
 	}
 }
 
-func InitializeStore(db Db) *AccountStoreDb {
+func InitializeStore(db Db, enc encrypter.Encrypter) *AccountStoreDb {
 	data, err := db.Read()
 	if err != nil {
-		return newStore(db)
+		return newStore(db, enc)
 	}
 	var storeData AccountStoreDb
 	err = json.Unmarshal(data, &storeData)
@@ -51,16 +53,18 @@ func InitializeStore(db Db) *AccountStoreDb {
 		AccountStore: AccountStore{
 			Accounts: storeData.Accounts,
 		},
-		db: db,
+		db:        db,
+		encrypret: enc,
 	}
 }
 
-func newStore(db Db) *AccountStoreDb {
+func newStore(db Db, enc encrypter.Encrypter) *AccountStoreDb {
 	return &AccountStoreDb{
 		AccountStore: AccountStore{
 			Accounts: make(map[string]account.Account),
 		},
-		db: db,
+		db:        db,
+		encrypret: enc,
 	}
 }
 
