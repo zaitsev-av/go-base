@@ -26,7 +26,7 @@ func (db *JsonDb) Read() ([]byte, error) {
 }
 
 func (db *JsonDb) Write(contet []byte) {
-	os.WriteFile("accountData.json", contet, 0644)
+	os.WriteFile(db.fileName, contet, 0644)
 }
 
 // func WriteFile[T any](content T, fileName string, key string) {

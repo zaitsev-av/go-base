@@ -44,8 +44,9 @@ func InitializeStore(db Db, enc encrypter.Encrypter) *AccountStoreDb {
 	if err != nil {
 		return newStore(db, enc)
 	}
+	encData := enc.Decript(data)
 	var storeData AccountStoreDb
-	err = json.Unmarshal(data, &storeData)
+	err = json.Unmarshal(encData, &storeData)
 	if err != nil {
 		utils.PrintError(err, "Ошибка при декодировании данных -> Unmarshal")
 	}
@@ -71,10 +72,11 @@ func newStore(db Db, enc encrypter.Encrypter) *AccountStoreDb {
 func (store *AccountStoreDb) AddAccount(key string, data account.Account) {
 	store.Accounts[key] = data
 	dataToBytes, err := json.Marshal(store)
+	enc := store.encrypret.Encript(dataToBytes)
 	if err != nil {
 		utils.PrintError(err, "Ошибка сириализации данных")
 	}
-	store.db.Write(dataToBytes)
+	store.db.Write(enc)
 }
 
 func findByKey(store *AccountStoreDb, key string) (*AccountInfo, error) {

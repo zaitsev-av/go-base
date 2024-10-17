@@ -9,7 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const fileName = "accountData.json"
+const fileName = "accountData.st"
 
 var menuItems = []string{"Создать аккаунт", "Найти аккаунт", "Посмотреть список ключей", "Удалить аккаунт", "Выход", "Выберите дальниешее действие"}
 
